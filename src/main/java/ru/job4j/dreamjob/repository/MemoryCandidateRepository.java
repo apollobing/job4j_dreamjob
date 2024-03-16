@@ -6,6 +6,7 @@ import ru.job4j.dreamjob.model.Candidate;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,13 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class MemoryCandidateRepository implements CandidateRepository {
 
-    private final AtomicInteger nextId;
+    private final AtomicInteger nextId = new AtomicInteger(1);
 
-    private final ConcurrentHashMap<Integer, Candidate> candidates;
+    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private MemoryCandidateRepository() {
-        this.nextId = new AtomicInteger(1);
-        this.candidates = new ConcurrentHashMap<>();
         save(new Candidate(0, "Rob", "Intern Java Developer", LocalDateTime.now()));
         save(new Candidate(0, "John", "Junior Java Developer", LocalDateTime.now()));
         save(new Candidate(0, "Mellisa", "Junior+ Java Developer", LocalDateTime.now()));

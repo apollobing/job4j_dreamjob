@@ -6,6 +6,7 @@ import ru.job4j.dreamjob.model.Vacancy;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,13 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class MemoryVacancyRepository implements VacancyRepository {
 
-    private final AtomicInteger nextId;
+    private final AtomicInteger nextId = new AtomicInteger(1);
 
-    private final ConcurrentHashMap<Integer, Vacancy> vacancies;
+    private final Map<Integer, Vacancy> vacancies = new ConcurrentHashMap<>();
 
     private MemoryVacancyRepository() {
-        this.nextId = new AtomicInteger(1);
-        this.vacancies = new ConcurrentHashMap<>();
         save(new Vacancy(0, "Intern Java Developer", "Supply department", LocalDateTime.now()));
         save(new Vacancy(0, "Junior Java Developer", "Finance department", LocalDateTime.now()));
         save(new Vacancy(0, "Junior+ Java Developer", "IT department", LocalDateTime.now()));
