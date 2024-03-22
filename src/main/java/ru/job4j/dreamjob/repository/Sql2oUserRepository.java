@@ -31,15 +31,13 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("email", user.getEmail())
                     .addParameter("name", user.getName())
                     .addParameter("password", user.getPassword());
-            int generatedId = 0;
-            try {
-                generatedId = query.executeUpdate().getKey(Integer.class);
-            } catch (Sql2oException e) {
-                LOG.error("DB already has user with the same email", e);
-            }
+            int generatedId = query.executeUpdate().getKey(Integer.class);
             user.setId(generatedId);
-            return generatedId != 0 ? Optional.of(user) : Optional.empty();
+            return Optional.of(user);
+        } catch (Sql2oException e) {
+            LOG.error("DB already has user with the same email", e);
         }
+        return Optional.empty();
     }
 
     @Override
